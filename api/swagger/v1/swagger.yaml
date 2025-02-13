@@ -139,6 +139,12 @@ paths:
       responses:
         '200':
           description: pedidos encontrados
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
     post:
       summary: Cria um novo pedido
       tags:
@@ -153,86 +159,310 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                cliente:
-                  type: object
-                  properties:
-                    nome:
-                      type: string
-                    email:
-                      type: string
-                      format: email
-                    cpf:
-                      type: number
-                    token:
-                      type: string
-                  required:
-                  - nome
-                  - email
-                  - cpf
-                  - token
-                produtos:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                      slug:
-                        type: string
-                      nome:
-                        type: string
-                      preco:
-                        type: number
-                    required:
-                    - id
-                    - slug
-                    - nome
-                    - preco
-                valor:
-                  type: number
-                status:
-                  type: string
-                observacao:
-                  type: string
-                data:
-                  type: string
-                  format: date-time
-                data_status:
-                  type: string
-                  format: date-time
-                pagamento:
-                  type: string
-              required:
-              - id
-              - cliente
-              - produtos
-              - valor
-              - status
-              - observacao
-              - data
-              - data_status
-              - pagamento
+              "$ref": "#/components/schemas/Pedido"
   "/api/v1/pedidos/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
     get:
       summary: Recupera um pedido
       tags:
       - Pedidos
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
       responses:
         '200':
           description: pedido encontrado
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Pedido"
         '404':
           description: pedido não encontrado
+    put:
+      summary: Atualiza um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido atualizado
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/{id}/pagar":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Pagar um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido pagar com sucesso
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+              - id
+  "/api/v1/pedidos/{id}/receber":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Receber um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido receber com sucesso
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+              - id
+  "/api/v1/pedidos/{id}/preparar":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Preparar um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido preparar com sucesso
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+              - id
+  "/api/v1/pedidos/{id}/pronto":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Pronto um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido pronto com sucesso
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+              - id
+  "/api/v1/pedidos/{id}/finalizar":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Finalizar um pedido
+      tags:
+      - Pedidos
+      parameters: []
+      responses:
+        '200':
+          description: pedido finalizar com sucesso
+        '422':
+          description: requisição inválida
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+              - id
+  "/api/v1/pedidos/{id}/qr-code":
+    parameters:
+    - name: id
+      in: path
+      description: ID do pedido
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Recupera o QR Code do pedido
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: QR Code retornado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  qr_code:
+                    type: string
+                required:
+                - id
+                - qr_code
+        '404':
+          description: pedido não encontrado
+  "/api/v1/pedidos/prontos":
+    get:
+      summary: Lista pedidos prontos
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/recebidos":
+    get:
+      summary: Lista pedidos recebidos
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/em-preparacao":
+    get:
+      summary: Lista pedidos em preparação
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/finalizados":
+    get:
+      summary: Lista pedidos finalizados
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/pagamento-confirmado":
+    get:
+      summary: Lista pedidos com pagamento confirmado
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/pagamento-em-aberto":
+    get:
+      summary: Lista pedidos com pagamento em aberto
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
+  "/api/v1/pedidos/pagamento-recusado":
+    get:
+      summary: Lista pedidos com pagamento recusado
+      tags:
+      - Pedidos
+      responses:
+        '200':
+          description: lista de pedidos retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Pedido"
 components:
   schemas:
     Pedido:
