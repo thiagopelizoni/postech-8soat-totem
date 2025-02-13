@@ -37,6 +37,14 @@ module Api
         end
       end
 
+      # Endpoints de coleção para status: prontos, recebidos, etc.
+      %w[prontos recebidos em-preparacao finalizados pagamento-confirmado pagamento-em-aberto pagamento-recusado].each do |status|
+        define_method(status.tr('-', '_')) do
+          response = PedidoService.fetch_pedidos_by_status(status)
+          render json: response.parsed_response, status: response.code
+        end
+      end
+
       # GET /api/v1/pedidos/:id/qr-code
       def qr_code
         response = PedidoService.fetch_qr_code(params[:id])
@@ -55,4 +63,3 @@ module Api
     end
   end
 end
-
