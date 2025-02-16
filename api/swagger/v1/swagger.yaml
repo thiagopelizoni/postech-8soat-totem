@@ -496,12 +496,21 @@ components:
                 type: string
               preco:
                 type: integer
+            required:
+            - id
+            - slug
+            - nome
+            - preco
         valor:
-          type: integer
+          type: number
         status:
-          type: string
+          type:
+          - string
+          - 'null'
         observacao:
-          type: string
+          type:
+          - string
+          - 'null'
         data:
           type: string
           format: date_time
