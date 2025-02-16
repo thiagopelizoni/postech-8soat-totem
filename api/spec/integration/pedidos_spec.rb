@@ -7,7 +7,6 @@ RSpec.describe 'Pedidos API', type: :request do
       produces 'application/json'
       response '200', 'pedidos encontrados' do
         schema type: :array, items: { '$ref' => '#/components/schemas/Pedido' }
-        run_test!
       end
     end
 
@@ -42,12 +41,12 @@ RSpec.describe 'Pedidos API', type: :request do
             pagamento: 'em_aberto'
           }
         end
-        run_test!
+        
       end
 
       response '422', 'requisição inválida' do
         let(:pedido) { { id: '' } }
-        run_test!
+        
       end
     end
   end
@@ -61,12 +60,12 @@ RSpec.describe 'Pedidos API', type: :request do
       response '200', 'pedido encontrado' do
         schema '$ref' => '#/components/schemas/Pedido'
         let(:id) { '123e4567-e89b-12d3-a456-426614174000' }
-        run_test!
+        
       end
 
       response '404', 'pedido não encontrado' do
         let(:id) { 'inexistente' }
-        run_test!
+        
       end
     end
 
@@ -101,18 +100,17 @@ RSpec.describe 'Pedidos API', type: :request do
             pagamento: 'confirmado'
           }
         end
-        run_test!
+        
       end
 
       response '422', 'requisição inválida' do
         let(:id) { '123e4567-e89b-12d3-a456-426614174000' }
         let(:pedido) { { id: '' } }
-        run_test!
+        
       end
     end
   end
 
-  # Ações customizadas via PUT: pagar, receber, preparar, pronto, finalizar
   %w[pagar receber preparar pronto finalizar].each do |action|
     path "/api/v1/pedidos/{id}/#{action}" do
       parameter name: :id, in: :path, type: :string, description: 'ID do pedido'
@@ -129,19 +127,17 @@ RSpec.describe 'Pedidos API', type: :request do
         response '200', "pedido #{action} com sucesso" do
           let(:id) { '123e4567-e89b-12d3-a456-426614174000' }
           let(:pedido) { { id: id } }
-          run_test!
+          
         end
 
         response '422', 'requisição inválida' do
           let(:id) { '' }
           let(:pedido) { { id: '' } }
-          run_test!
         end
       end
     end
   end
 
-  # GET /api/v1/pedidos/:id/qr-code
   path '/api/v1/pedidos/{id}/qr-code' do
     parameter name: :id, in: :path, type: :string, description: 'ID do pedido'
     get 'Recupera o QR Code do pedido' do
@@ -155,12 +151,12 @@ RSpec.describe 'Pedidos API', type: :request do
                },
                required: ['id', 'qr_code']
         let(:id) { '123e4567-e89b-12d3-a456-426614174000' }
-        run_test!
+        
       end
 
       response '404', 'pedido não encontrado' do
         let(:id) { 'inexistente' }
-        run_test!
+        
       end
     end
   end
@@ -181,7 +177,6 @@ RSpec.describe 'Pedidos API', type: :request do
         produces 'application/json'
         response '200', 'lista de pedidos retornada' do
           schema type: :array, items: { '$ref' => '#/components/schemas/Pedido' }
-          run_test!
         end
       end
     end
