@@ -37,12 +37,13 @@ RSpec.configure do |config|
                     slug: { type: :string },
                     nome: { type: :string },
                     preco: { type: :integer }
-                  }
+                  },
+                  required: %w[id slug nome preco]
                 }
               },
-              valor: { type: :integer },
-              status: { type: :string },
-              observacao: { type: :string },
+              valor: { type: :number },
+              status: { type: [:string, 'null'] },
+              observacao: { type: [:string, 'null'] },
               data: { type: :string, format: :date_time },
               data_status: { type: :string, format: :date_time },
               pagamento: { type: :string }
