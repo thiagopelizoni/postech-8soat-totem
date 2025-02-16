@@ -5,6 +5,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'mongoid-rspec'
 require 'shoulda/matchers'
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
