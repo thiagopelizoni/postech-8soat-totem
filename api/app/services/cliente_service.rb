@@ -15,8 +15,9 @@ module ClienteService
 
   # POST /clientes
   def self.create_cliente(params)
+    cliente_params = params["cliente"] || {}
     required_keys = %w[nome data_nascimento cpf email]
-    missing_keys = required_keys.select { |key| params[key].blank? }
+    missing_keys = required_keys.select { |key| cliente_params[key].to_s.strip.empty? }
     raise ArgumentError, "Chaves obrigatórias faltando: #{missing_keys.join(', ')}" if missing_keys.any?
 
     post('/clientes',
@@ -35,7 +36,7 @@ module ClienteService
   # POST /login
   def self.login(params)
     required_keys = %w[cpf password]
-    missing_keys = required_keys.select { |key| params[key].blank? }
+    missing_keys = required_keys.select { |key| params[key].to_s.strip.empty? }
     raise ArgumentError, "Chaves obrigatórias faltando: #{missing_keys.join(', ')}" if missing_keys.any?
 
     post('/login',
@@ -43,4 +44,3 @@ module ClienteService
          headers: { 'Content-Type' => 'application/json' })
   end
 end
-
