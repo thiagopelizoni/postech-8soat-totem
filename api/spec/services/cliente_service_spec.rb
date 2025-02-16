@@ -4,10 +4,13 @@ RSpec.describe ClienteService do
   describe '.create_cliente' do
     let(:valid_params) do
       {
-        "nome" => "João da Silva",
-        "data_nascimento" => "1990-01-01",
-        "cpf" => "12345678901",
-        "email" => "joao.silva@example.com"
+        "cliente" => {
+          "nome" => "João da Silva",
+          "data_nascimento" => "1990-01-01",
+          "cpf" => "12345678901",
+          "email" => "joao.silva@example.com",
+          "password" => "@TechChallenge!2024"
+        }
       }
     end
 
@@ -24,10 +27,11 @@ RSpec.describe ClienteService do
     end
 
     it 'lança erro se faltarem chaves obrigatórias' do
-      invalid_params = valid_params.except("email")
+      invalid_params = valid_params.deep_dup
+      invalid_params["cliente"].delete("email")
+      
       expect { ClienteService.create_cliente(invalid_params) }
         .to raise_error(ArgumentError, /email/)
     end
   end
 end
-
