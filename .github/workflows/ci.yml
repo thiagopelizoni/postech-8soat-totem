@@ -57,18 +57,17 @@ jobs:
     name: Run SonarQube Analysis
     runs-on: ubuntu-latest
     needs: test
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download coverage report
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage
-
-      - name: Run SonarQube Scanner
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: docker compose run --rm sonar
+      - name: Create minimal .env file for SonarQube
+        run: |
+          touch .env
+          echo "RAILS_ENV=${{ secrets.RAILS_ENV }}" >> .env
+          echo "RAILS_MAX_THREADS=${{ secrets.RAILS_MAX_THREADS }}" >> .env
+          echo "RAILS_PORT=${{ secrets.RAILS_PORT }}" >> .env
+          echo "API_CLIENTE=${{ secrets.API_CLIENTE }}" >> .env
+          echo "API_ESTOQUE=${{ secrets.API_ESTOQUE }}" >> .env
+          echo "API_PEDIDO=${{ secrets.API_PEDIDO }}" >> .env
+          echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}" >> .env

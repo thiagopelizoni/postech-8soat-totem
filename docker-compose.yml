@@ -34,8 +34,8 @@ services:
       - api
     command: >
       sonar-scanner 
-      -Dsonar.projectKey=my_project 
-      -Dsonar.organization=my_org 
+      -Dsonar.projectKey=thiagopelizoni_postech-8soat-totem
+      -Dsonar.organization=thiagopelizoni
       -Dsonar.host.url=https://sonarcloud.io 
       -Dsonar.sources=app 
       -Dsonar.tests=spec,features 
