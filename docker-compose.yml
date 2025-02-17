@@ -8,6 +8,7 @@ services:
       - "${RAILS_PORT}:3000"
     volumes:
       - ./api:/api
+      - coverage_data:/api/coverage
     env_file:
       - .env
 
