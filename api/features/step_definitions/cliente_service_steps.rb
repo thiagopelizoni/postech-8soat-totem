@@ -10,7 +10,7 @@ Given(/^a valid cliente payload:$/) do |table|
   @payload = { "cliente" => table.hashes.first }
 end
 
-Given(/^a cliente payload missing "([^"]*)"$/) do |missing_key, table|
+Given(/^a cliente payload missing "([^"]*)":?$/) do |missing_key, table|
   @payload = { "cliente" => table.hashes.first }
   @payload["cliente"].delete(missing_key)
 end
@@ -27,7 +27,7 @@ Given(/^valid login credentials:$/) do |table|
   @login_payload = table.hashes.first
 end
 
-Given(/^login credentials missing "([^"]*)"$/) do |missing_key, table|
+Given(/^login credentials missing "([^"]*)":?$/) do |missing_key, table|
   @login_payload = table.hashes.first
   @login_payload.delete(missing_key)
 end
